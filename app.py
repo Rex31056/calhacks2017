@@ -18,22 +18,23 @@ def schedule(name):
     query = db[name].find().sort('Date')
     for i in query:
         events.append(i)
+    return str(events)
 
 
 
 @app.route('/insert', methods=['POST', 'GET'])
 def insert():
     if request.method == 'POST':
-        name = request.form['Name']
+        user = request.form['User']
         date = request.form['Date']
-        start_time = int(request.form(['StartTime']))
-        end_time = int(request.form(['EndTime']))
-        event = request.form(['event name'])
+        start_time = request.form['StartTime']
+        end_time = request.form['EndTime']
+        event = request.form['Name']
         post = {"date": date,
                 "start": start_time,
                 "end": end_time,
                 "event": event}
-        inserted_event = db[name].insert_one(post)
-        return redirect(url_for(homepage))
+        inserted_event = db[user].insert_one(post)
+        return redirect(url_for('homepage'))
     else:
         return render_template('error.html')
