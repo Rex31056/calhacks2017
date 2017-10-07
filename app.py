@@ -18,7 +18,7 @@ def schedule(name):
     query = db[name].find().sort('Date')
     for i in query:
         events.append(i)
-    
+
 
 
 @app.route('/insert', methods=['POST', 'GET'])
