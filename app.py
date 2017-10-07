@@ -13,7 +13,7 @@ db = client['schedule']
 def homepage():
     return render_template('homepage.html')
 
-@app.route('/<name>/insert'), methods=['POST', 'GET'])
+@app.route('/<name>/insert', methods=['POST', 'GET'])
 def insert(name):
     if request.method == 'POST':
         start_time = int(request.form(['start time']))
