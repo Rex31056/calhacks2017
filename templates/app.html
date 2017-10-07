@@ -3,4 +3,15 @@
   <h1>Hello {{ name }}!</h1>
 {% else %}
   <h1>Hello, World!</h1>
+  <form action="/insert" method="post">
+    Name:<br>
+    <input type = "text" name = "Name"><br>
+    Date:<br>
+    <input type = "date" name = "Date"><br>
+    Start Time:<br>
+    <input type = "time" name = "StartTime"><br>
+    End Time: <br>
+    <input type = "time" name = "EndTime"><br>
+    <input type = "submit" name = "CreateEvent">
+  </form>
 {% endif %}
