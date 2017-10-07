@@ -1,6 +1,5 @@
 from flask import Flask
-from flask import render_template
-from flask import request
+from flask import render_template, request, redirect, url_for
 import pymongo
 from pymongo import MongoClient
 import time
@@ -23,6 +22,6 @@ def insert(name):
                 "end": end_time,
                 "event": event}
         inserted_event = db[name].insert_one(post)
-        return "done!"
+        return redirect(url_for(homepage))
     else:
-        return "Error"
+        return render_template('error.html')
