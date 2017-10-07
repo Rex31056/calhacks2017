@@ -1,13 +1,28 @@
 from flask import Flask
 from flask import render_template
+from flask import request
+import pymongo
+from pymongo import MongoClient
+import time
 
 app = Flask(__name__)
+client = MongoClient()
+db = client['schedule']
 
 @app.route('/')
-def hello_world():
-    return 'Hello, World!'
+def homepage():
+    return render_template('homepage.html')
 
-@app.route('/hello/')
-@app.route('/hello/<name>')
-def hello(name=None):
-    return render_template('app.html', name=name)
+@app.route('/<name>/insert'), methods=['POST', 'GET'])
+def insert(name):
+    if request.method == 'POST':
+        start_time = int(request.form(['start time']))
+        end_time = int(request.form(['end time']))
+        event = request.form(['event name'])
+        post = {"start": start_time,
+                "end": end_time,
+                "event": event}
+        inserted_event = db[name].insert_one(post)
+        return "done!"
+    else:
+        return "Error"
