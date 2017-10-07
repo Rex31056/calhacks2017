@@ -10,7 +10,16 @@ db = client['schedule']
 
 @app.route('/')
 def homepage():
-    return render_template('homepage.html')
+    return render_template('insert.html')
+
+@app.route('/<name>')
+def schedule(name):
+    events = []
+    query = db[name].find().sort('Date')
+    for i in query:
+        events.append(i)
+    
+
 
 @app.route('/insert', methods=['POST', 'GET'])
 def insert():
