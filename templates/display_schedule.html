@@ -18,23 +18,22 @@
     <th>End Time </th>
   </tr>
   <script>
-  for (i = 0; i < events.length; i++){
+  var event = '{{ events }}';
+  for (i = 0; i < event.length; i++){
     var row = document.createElement("tr");
-    var cell = row.createElement("td");
-    cell.appendChild(events[i]["event"]);
-    var cell = row.createElement("td");
-    cell.appendChild(events[i]["start"]);
-    var cell = row.createElement("td");
-    cell.appendChild(events[i]["end"]);
+    var cell = document.createElement("td");
+    row.appendChild(cell).appendChild(events[i]["event"]);
+    row.appendChild(cell).appendChild(events[i]["start"]);
+    row.appendChild(cell).appendChild(events[i]["end"]);
   }
   </script>
-  <!-->
+  <!--
   <tr>
     <td>{{events[0]["event"]}}</td>
     <td>{{events[0]["start"]}}</td>
     <td>{{events[0]["end"]}}</td>
   </tr>
-  <-->
+  -->
 
 </table>
 
