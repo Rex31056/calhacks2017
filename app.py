@@ -2,6 +2,7 @@ from flask import Flask, g, render_template, request, redirect, url_for, session
 import pymongo
 from pymongo import MongoClient
 import time
+import datetime
 from flask_oauthlib.client import OAuth, OAuthException
 from facebook import GraphAPI
 import bson
@@ -86,18 +87,34 @@ def get_facebook_oauth_token():
 def schedule(name):
     me = facebook.get('/me')
     if name[1:] == str(me.data['id']):
-        query = database[name].find().sort('Date')
+        today = datetime.datetime.now()
+        today_date = str(today.year) + '-' + '{:02d}'.format(today.month) + '-' + '{:02d}'.format(today.day)
+        query = database[name].find({'date': today_date})
+
+        schedule = DaySchedule()
         event_count = []
         for i in query:
             event_count.append(i)
-        length = len(event_count)
-        events = []
-        for j in range(0, length):
-            events.append([])
-            events[j].append(event_count[j]['event'])
-            events[j].append(event_count[j]['start'])
-            events[j].append(event_count[j]['end'])
-        return render_template('display_schedule.html', events=events, events_length = length)
+        for j in event_count:
+            schedule.add_event(Event(j['event'], j['date'], j['start'], j['end'], j['urgency']))
+        conflict, schedule1_events, schedule2_events = schedule.generate_schedule()
+        schedule1_strings = []
+        schedule2_strings = []
+        for k in range(len(schedule1_events)):
+            schedule1_strings.append([])
+            schedule1_strings[k].append(str(schedule1_events[k].name))
+            schedule1_strings[k].append(str(schedule1_events[k].start))
+            schedule1_strings[k].append(str(schedule1_events[k].end))
+        for m in range(len(schedule2_events)):
+            schedule2_strings.append([])
+            schedule2_strings[m].append(str(schedule2_events[m].name))
+            schedule2_strings[m].append(str(schedule2_events[m].start))
+            schedule2_strings[m].append(str(schedule2_events[m].end))
+        schedule1_length = len(schedule1_events)
+        schedule2_length = len(schedule2_events)
+        return render_template('display_schedule.html', conflict = conflict, schedule1 = schedule1_strings,
+            schedule2 = schedule2_strings, schedule1_length = schedule1_length,
+            schedule2_length = schedule2_length, today = today_date)
     else:
         return 'You do not have permission for this.'
 
@@ -111,10 +128,16 @@ def insert():
         start_time = request.form['StartTime']
         end_time = request.form['EndTime']
         event = request.form['Name']
+        try:
+            urgent = request.form['Urgent']
+            urgent = 1
+        except:
+            urgent = 0
         post = {"date": date,
                 "start": start_time,
                 "end": end_time,
-                "event": event}
+                "event": event,
+                "urgency": urgent}
         inserted_event = database[user].insert_one(post)
         return redirect(url_for('index'))
     else:
@@ -128,11 +151,11 @@ class Event:
         self.end = EndTime
         self.urgency = urgency
         self.time_span = time_span
-        if StartTime == None:
-            self.priority = 0
-        else:
+        if StartTime is not None and EndTime is not None:
             self.priority = 1
-            self.time_span = EndTime - StartTime
+            self.time_span = (datetime.datetime.strptime(EndTime, '%H:%M') - datetime.datetime.strptime(StartTime, '%H:%M')).seconds
+        else:
+            self.priority = 0
 
 class DaySchedule:
     def __init__(self):

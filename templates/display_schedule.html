@@ -7,7 +7,13 @@
 <body>
 
 <h1>Schedule</h1>
-<p>List of schedule events.</p>
+<p>List of schedule events on {{ today }}.</p>
+
+{% if {{ conflict }} %}
+  <h2>You have some conflicts. Here are the events we could fit in your schedule:</h1>
+{% else %}
+  <h2>You have no conflicts. Here's your schedule:</h2>
+{% endif %}
 
 <table id="events" style="width:100%">
   <tr>
@@ -15,18 +21,12 @@
     <th>Start Time</th>
     <th>End Time </th>
   </tr>
-
-<!--
-<tr>
-    <td>{{events[0]["event"]}}</td>
-    <td>{{events[0]["start"]}}</td>
-    <td>{{events[0]["end"]}}</td>
-  </tr>
--->
 </table>
 
 <script>
-for (var i = 0; i < {{events_length}}; i++){
+var schedule1 = {{ schedule1_strings|safe }};
+
+for (var i = 0; i < {{schedule1_length}}; i++){
   var row = document.createElement("tr");
   row.setAttribute('id', "row"+i);
   var cell_name = document.createElement("td");
@@ -36,12 +36,42 @@ for (var i = 0; i < {{events_length}}; i++){
   var cell_end = document.createElement("td");
   cell_end.setAttribute('id', "end_time"+i);
 
-  var eventslist = {{ events|safe }};
-  console.log(eventslist);
+  cell_name.innerHTML = schedule1[i][0];
+  cell_start.innerHTML = schedule1[i][1];
+  cell_end.innerHTML = schedule1[i][2];
 
-  cell_name.innerHTML = eventslist[i][0];
-  cell_start.innerHTML = eventslist[i][1];
-  cell_end.innerHTML = eventslist[i][2];
+  row.appendChild(cell_name);
+  row.appendChild(cell_start);
+  row.appendChild(cell_end);
+
+  document.getElementById("events").appendChild(row);
+}
+
+</script>
+
+{% if {{ conflict }} %}
+  <h2>Here are the events we couldn't fit in your schedule:</h1>
+{% else %}
+  <h2>Here are your low priority tasks:</h2>
+{% endif %}
+
+<script>
+
+var schedule2 = {{ schedule2_strings|safe }};
+
+for (var i = 0; i < {{schedule2_length}}; i++){
+  var row = document.createElement("tr");
+  row.setAttribute('id', "row2_"+i);
+  var cell_name = document.createElement("td");
+  cell_name.setAttribute('id', "event_name2_"+i);
+  var cell_start = document.createElement("td");
+  cell_start.setAttribute('id', "start_time2_"+i);
+  var cell_end = document.createElement("td");
+  cell_end.setAttribute('id', "end_time2_"+i);
+
+  cell_name.innerHTML = schedule2[i][0];
+  cell_start.innerHTML = schedule2[i][1];
+  cell_end.innerHTML = schedule2[i][2];
 
   row.appendChild(cell_name);
   row.appendChild(cell_start);
