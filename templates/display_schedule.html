@@ -22,9 +22,14 @@
   for (i = 0; i < event.length; i++){
     var row = document.createElement("tr");
     var cell = document.createElement("td");
-    row.appendChild(cell).appendChild(events[i]["event"]);
-    row.appendChild(cell).appendChild(events[i]["start"]);
-    row.appendChild(cell).appendChild(events[i]["end"]);
+    cell.appendChild(event[i]["event"]);
+    row.appendChild(cell);
+    var cell = document.createElement("td");
+    cell.appendChild(event[i]["start"]);
+    row.appendChild(cell);
+    var cell = document.createElement("td");
+    cell.appendChild(event[i]["end"]);
+    row.appendChild(cell);
   }
   </script>
   <!--
