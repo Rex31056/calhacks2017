@@ -41,7 +41,9 @@ def homepage():
 
 @app.route('/index')
 def index():
-    return render_template('insert.html')
+    me = facebook.get('/me')
+    user = 'u' + str(me.data['id'])
+    return render_template('insert.html', user=user)
 
 @app.route('/login')
 def login():
