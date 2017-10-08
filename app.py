@@ -71,22 +71,23 @@ def facebook_authorized():
 def get_facebook_oauth_token():
     return session.get('oauth_token')
 
-@app.before_request
-def get_current_user():
-    me = facebook.get('/me')
-    g.user = User(id=str(me.data['id']), name=me.data['name'],
-                        profile_url=me.data['link'],
-                        access_token=me.data['access_token'])
+#@app.before_request
+#def get_current_user():
+#    me = facebook.get('/me')
+#    g.user = User(id=str(me.data['id']), name=me.data['name'],
+#                        profile_url=me.data['link'],
+#                        access_token=me.data['access_token'])
 
 @app.route('/<name>')
 def schedule(name):
     me = facebook.get('/me')
     if name[1:] == str(me.data['id']):
-        events = []
         query = database[name].find().sort('Date')
+        events = []
         for i in query:
             events.append(i)
-        return render_template('display_schedule.html', events=events)
+        length = len(events)
+        return render_template('display_schedule.html', events=events, events_length = length)
     else:
         return 'You do not have permission for this.'
 
