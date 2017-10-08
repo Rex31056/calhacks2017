@@ -111,16 +111,18 @@ def insert():
         return render_template('error.html')
 
 class Event:
-    def __init__(self, Name, Date, StartTime = None, EndTime = None, urgency = False):
+    def __init__(self, Name, Date, StartTime = None, EndTime = None, urgency = False, time_span = 0):
         self.name = Name
         self.date = Date
         self.start = StartTime
         self.end = EndTime
         self.urgency = urgency
+        self.time_span = time_span
         if StartTime == None:
             self.priority = 0
         else:
             self.priority = 1
+            self.time_span = EndTime - StartTime
 
 class DaySchedule:
     def __init__(self):
@@ -197,6 +199,6 @@ class DaySchedule:
             return True, schedule, unused_events
         else:
             return False, self.check_for_conflicts()
-            
+
     def make_timed_event(self, event, start_time, end_time):
         return Event(event.name, event.date, start_time, end_time)
