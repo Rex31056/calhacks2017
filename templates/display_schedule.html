@@ -26,19 +26,23 @@
 </table>
 
 <script>
-for (var i = 0; i < events.length; i++){
+for (var i = 0; i < {{events_length}}; i++){
   var row = document.createElement("tr");
-  row.setAttribute('id', "row");
-  var cell_name = document.createElement("td" + i);
-  cell_name.setAttribute('id', "event_name");
-  var cell_start = document.createElement("td" + i);
-  cell_start.setAttribute('id', "start_time");
-  var cell_end = document.createElement("td" + i);
-  cell_end.setAttribute('id', "end_time");
+  row.setAttribute('id', "row"+i);
+  var cell_name = document.createElement("td");
+  cell_name.setAttribute('id', "event_name"+i);
+  var cell_start = document.createElement("td");
+  cell_start.setAttribute('id', "start_time"+i);
+  var cell_end = document.createElement("td");
+  cell_end.setAttribute('id', "end_time"+i);
 
-  cell_name.innerHTML = "{{events[i]["event"]}}";
-  cell_start.innerHTML = "{{events[i]["start"]}}";
-  cell_end.innerHTML = "{{events[i]["end"]}}";
+  the_event = eventslist[i]["event"];
+  the_start = eventslist[i]["start"];
+  the_end = eventslist[i]["end"];
+
+  cell_name.innerHTML = "the_event";
+  cell_start.innerHTML = "the_start";
+  cell_end.innerHTML = "the_end";
 
   row.appendChild(cell_name);
   row.appendChild(cell_start);

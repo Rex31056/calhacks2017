@@ -179,3 +179,24 @@ class DaySchedule:
             if self.is_conflict(self.priority1[i], self.priority1[i+1]):
                 return self.priority1[i], self.priority1[i+1]
         return True
+
+    def generate_schedule(self):
+        unused_events = []
+        if self.check_for_conflicts() == True:
+            schedule = self.priority1[:]
+            for event in self.priority0:
+                needed_time = event.time_span
+                i = 0
+                unused = True #Did you succesfully fit the event in your schedule?
+                while i < len(self.schedule) - 1:
+                    if unused and needed_time <= schedule[i+1].start - schedule[i].end:
+                        schedule.insert(i+1, make_timed_event(event, schedule[i].end, schedule[i].end + needed_time))
+                        unused = False
+                if unused:
+                    unused_events.append(unused)
+            return True, schedule, unused_events
+        else:
+            return False, self.check_for_conflicts()
+            
+    def make_timed_event(self, event, start_time, end_time):
+        return Event(event.name, event.date, start_time, end_time)
