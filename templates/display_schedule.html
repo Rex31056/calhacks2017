@@ -10,7 +10,6 @@
 <p>List of schedule events.</p>
 
 </body>
-</html>
 
 <table style="width:100%">
   <tr>
@@ -18,11 +17,24 @@
     <th>Start Time</th>
     <th>End Time </th>
   </tr>
+  <script>
+  for (i = 0; i < length(events); i++){
+    var row = document.createElement("tr");
+    var cell = row.createElement("td");
+    cell.appendChild(events[i]["event"]);
+    var cell = row.createElement("td");
+    cell.appendChild(events[i]["start"]);
+    var cell = row.createElement("td");
+    cell.appendChild(events[i]["end"]);
+  }
+  </script>
+  <!-->
   <tr>
     <td>{{events[0]["event"]}}</td>
     <td>{{events[0]["start"]}}</td>
     <td>{{events[0]["end"]}}</td>
   </tr>
+  <-->
 
 </table>
 
