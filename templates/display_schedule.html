@@ -9,49 +9,45 @@
 <h1>Schedule</h1>
 <p>List of schedule events.</p>
 
-</body>
-
-<table style="width:100%">
+<table id="events" style="width:100%">
   <tr>
     <th>Event</th>
     <th>Start Time</th>
     <th>End Time </th>
   </tr>
-  <script>
-  var event = '{{ events }}';
-  for (i = 0; i < event.length; i++){
-    var row = document.createElement("tr");
-    var event_name = document.createElement("td");
-    var start_time = document.createElement("td");
-    var end_time = document.createElement("td");
-    event_name.innerHTML = event[i]["event"];
-    start_time.innerHTML = event[i]["start"];
-    end_time.innerHTML = event[i]["end"];
-    row.appendChild(event_name);
-    row.appendChild(start_time);
-    row.appendChild(end_time);
-/*
-    var cell = document.createElement("td");
-    cell.appendChild(event[i]["event"]);
-    row.appendChild(cell);
-    var cell = document.createElement("td");
-    cell.appendChild(event[i]["start"]);
-    row.appendChild(cell);
-    var cell = document.createElement("td");
-    cell.appendChild(event[i]["end"]);
-    row.appendChild(cell);
-*/
-  }
-  </script>
-  <!--
-  <tr>
+
+<!--
+<tr>
     <td>{{events[0]["event"]}}</td>
     <td>{{events[0]["start"]}}</td>
     <td>{{events[0]["end"]}}</td>
   </tr>
-  -->
-
+-->
 </table>
+
+<script>
+//for (i = 0; i < events.length; i++){
+var row = document.createElement("tr");
+row.setAttribute('id', "row");
+var cell_name = document.createElement("td");
+cell_name.setAttribute('id', "event_name");
+var cell_start = document.createElement("td");
+cell_start.setAttribute('id', "start_time");
+var cell_end = document.createElement("td");
+cell_end.setAttribute('id', "end_time");
+
+cell_name.innerHTML = "{{events[0]["event"]}}";
+cell_start.innerHTML = "{{events[0]["start"]}}";
+cell_end.innerHTML = "{{events[0]["end"]}}";
+
+row.appendChild(cell_name);
+row.appendChild(cell_start);
+row.appendChild(cell_end);
+
+document.getElementById("events").appendChild(row);
+//}
+
+</script>
 
 </body>
 </html>
