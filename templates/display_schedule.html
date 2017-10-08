@@ -21,6 +21,16 @@
   var event = '{{ events }}';
   for (i = 0; i < event.length; i++){
     var row = document.createElement("tr");
+    var event_name = document.createElement("td");
+    var start_time = document.createElement("td");
+    var end_time = document.createElement("td");
+    event_name.innerHTML = event[i]["event"];
+    start_time.innerHTML = event[i]["start"];
+    end_time.innerHTML = event[i]["end"];
+    row.appendChild(event_name);
+    row.appendChild(start_time);
+    row.appendChild(end_time);
+/*
     var cell = document.createElement("td");
     cell.appendChild(event[i]["event"]);
     row.appendChild(cell);
@@ -30,6 +40,7 @@
     var cell = document.createElement("td");
     cell.appendChild(event[i]["end"]);
     row.appendChild(cell);
+*/
   }
   </script>
   <!--
