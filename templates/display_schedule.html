@@ -36,13 +36,12 @@ for (var i = 0; i < {{events_length}}; i++){
   var cell_end = document.createElement("td");
   cell_end.setAttribute('id', "end_time"+i);
 
-  the_event = eventslist[i]["event"];
-  the_start = eventslist[i]["start"];
-  the_end = eventslist[i]["end"];
+  var eventslist = {{ events|safe }};
+  console.log(eventslist);
 
-  cell_name.innerHTML = "the_event";
-  cell_start.innerHTML = "the_start";
-  cell_end.innerHTML = "the_end";
+  cell_name.innerHTML = eventslist[i][0];
+  cell_start.innerHTML = eventslist[i][1];
+  cell_end.innerHTML = eventslist[i][2];
 
   row.appendChild(cell_name);
   row.appendChild(cell_start);

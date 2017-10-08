@@ -4,6 +4,8 @@ from pymongo import MongoClient
 import time
 from flask_oauthlib.client import OAuth, OAuthException
 from facebook import GraphAPI
+import bson
+import json
 
 app = Flask(__name__)
 
@@ -83,10 +85,16 @@ def schedule(name):
     me = facebook.get('/me')
     if name[1:] == str(me.data['id']):
         query = database[name].find().sort('Date')
-        events = []
+        event_count = []
         for i in query:
-            events.append(i)
-        length = len(events)
+            event_count.append(i)
+        length = len(event_count)
+        events = []
+        for j in range(0, length):
+            events.append([])
+            events[j].append(event_count[j]['event'])
+            events[j].append(event_count[j]['start'])
+            events[j].append(event_count[j]['end'])
         return render_template('display_schedule.html', events=events, events_length = length)
     else:
         return 'You do not have permission for this.'
